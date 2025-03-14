@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle, FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ email, password });
-    // Add your login logic here
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   return (
@@ -26,7 +32,6 @@ const Login = () => {
         }}
       />
 
-      
       <div className="min-h-screen flex justify-center items-center p-4">
         <div className="max-w-3xl w-full bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
@@ -51,7 +56,7 @@ const Login = () => {
 
             {/* Right side - Form fields */}
             <div className="p-4 md:p-6 md:w-2/3">
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                 {/* Email */}
                 <div>
                   <label
@@ -65,6 +70,7 @@ const Login = () => {
                       <FaEnvelope className="text-gray-500 text-xs" />
                     </div>
                     <input
+                      {...register("email", { required: true })}
                       type="email"
                       name="email"
                       id="email"
@@ -90,6 +96,7 @@ const Login = () => {
                       <FaLock className="text-gray-500 text-xs" />
                     </div>
                     <input
+                      {...register("password", { required: true })}
                       type="password"
                       id="password"
                       name="password"
@@ -106,6 +113,7 @@ const Login = () => {
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center">
                     <input
+                      {...register("remember-me", { required: true })}
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
