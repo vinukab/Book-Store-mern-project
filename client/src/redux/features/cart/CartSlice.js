@@ -19,7 +19,6 @@ const cartSlice = createSlice({
           icon: "warning",
           iconColor: "#ff9800",
           title: "Item already in the cart!",
-          showConfirmButton: false,
           timer: 1500,
           width: "300px",
           customClass: {
