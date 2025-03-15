@@ -11,8 +11,10 @@ import "sweetalert2/dist/sweetalert2.js";
 // '../' refers to the parent directory(one level up). which is client in this context
 import router from './routers/router.jsx' 
 
-createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>,
-)
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </StrictMode>
+);

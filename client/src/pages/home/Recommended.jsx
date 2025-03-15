@@ -6,15 +6,10 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
+import { useFetchAllBooksQuery } from "../../redux/features/cart/booksApi";
 
 const Recommended = () => {
-  const [books, setBooks] = useState([]); // Move state hook inside the component
-
-  useEffect(() => {
-    fetch("books.json")
-      .then((res) => res.json())
-      .then((data) => setBooks(data));
-  }, []);
+  const { data: books =[]} =useFetchAllBooksQuery();
 
   return (
     <div className="px-8 py-16">
