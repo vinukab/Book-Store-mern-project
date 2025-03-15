@@ -18,7 +18,7 @@ const bookRoutes = require("./src/books/book.route.js");
 app.use("/api/books", bookRoutes); //prefixes any route in book.route.js with /api/books
 
 async function main() {
-  await mongoose.connect(process.env.DB_URL);
+  await mongoose.connect(process.env.DB_URL);//connects to the database using the URL from .env file
   app.use("/", (req, res) => {
     res.send("Welcome to my Book Store server!!!");
   });

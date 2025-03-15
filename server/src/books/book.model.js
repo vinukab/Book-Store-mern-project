@@ -1,3 +1,5 @@
+//specifies the specific structure of the book collection within the database
+
 const mongoose = require("mongoose");
 
 const bookSchema = new mongoose.Schema(
