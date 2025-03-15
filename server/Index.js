@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json()); //helps to parse JSON data
 app.use(
   cors({
-    origin: "*", //allows any origin to access the server
+    origin: "http://localhost:5173", //allows only the 5173 port origin to access the server
     credentials: true, //accepts cookies from the client
   })
 );

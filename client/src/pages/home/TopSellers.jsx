@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Pagination, Navigation } from "swiper/modules";
-
+import { useFetchAllBooksQuery } from "../../redux/features/cart/booksApi";
 
 const categories = [
   "Choose a genre",
@@ -18,14 +18,9 @@ const categories = [
 ];
 
 export const TopSellers = () => {
-  const [books, setBooks] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
 
-  useEffect(() => {
-    fetch("books.json")
-      .then((res) => res.json())
-      .then((data) => setBooks(data));
-  }, []);
+  const { data: books = [] } = useFetchAllBooksQuery();
 
   const filteredBooks =
     selectedCategory === "Choose a genre"
@@ -34,7 +29,6 @@ export const TopSellers = () => {
           (book) => book.category === selectedCategory.toLowerCase()
         );
 
-  console.log(filteredBooks);
   return (
     <div className="py-10 px-8">
       <h2 className="font-semibold text-3xl ">Top Sellers</h2>
@@ -53,7 +47,8 @@ export const TopSellers = () => {
         </select>
       </div>
 
-      <Swiper navigation={true} 
+      <Swiper
+        navigation={true}
         slidesPerView={1}
         spaceBetween={30}
         breakpoints={{
@@ -74,7 +69,7 @@ export const TopSellers = () => {
             spaceBetween: 50,
           },
         }}
-        modules={[Pagination,Navigation]}
+        modules={[Pagination, Navigation]}
         className="mySwiper"
       >
         {filteredBooks.length > 0 &&
