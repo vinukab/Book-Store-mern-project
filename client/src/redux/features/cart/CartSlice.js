@@ -19,14 +19,14 @@ const cartSlice = createSlice({
           icon: "warning",
           iconColor: "#ff9800",
           title: "Item already in the cart!",
-          timer: 1500,
           width: "300px",
+          showConfirmButton: false,
+          timer: 1500,
           customClass: {
             title: "text-sm font-semibold",
             popup: "small-popup",
           },
         });
-        state.cartItems.push(action.payload);
       } else {
         Swal.fire({
           position: "center",

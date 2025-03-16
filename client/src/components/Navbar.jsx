@@ -7,15 +7,21 @@ import { IoSearch } from "react-icons/io5";
 import { CiUser, CiHeart } from "react-icons/ci";
 import { GiShoppingCart } from "react-icons/gi";
 import { Dropdown } from "flowbite-react";
-
+import { useAuth } from "../context/AuthContext";
 import AvatarImg from "../assets/avatar.png";
 import { useSelector } from "react-redux";
 
 export const Navbar = () => {
-  const user = false;
+  const { currentUser, logOut } = useAuth();
+
+  const handleLogOut = () => {
+    logOut();
+  };
 
   const cartItems = useSelector((state) => state.cart.cartItems);
 
+
+  
   return (
     <header className="max-w-screen-2xl mx-auto px-9 py-6 pr-10">
       <nav className="flex flex-row justify-between items-center">
@@ -37,7 +43,7 @@ export const Navbar = () => {
 
         <div className="relative flex items-center md:space-x-3 space-x-2">
           {/* User Dropdown */}
-          {user ? (
+          {currentUser ? (
             <Dropdown
               inline
               arrowIcon={false}
@@ -46,7 +52,7 @@ export const Navbar = () => {
                 <img
                   src={AvatarImg}
                   alt="User Avatar"
-                  className="rounded-full size-4 md:size-7 ring-2 ring-blue-500 cursor-pointer"
+                  className="rounded-full  ring-2 ring-blue-500 cursor-pointer size-6 md:size-8"
                 />
               }
             >
@@ -64,18 +70,28 @@ export const Navbar = () => {
                 Orders
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item
-                href="cart"
-                className="hover:bg-gray-100 rounded-lg"
-              >
-                Cart Page
-              </Dropdown.Item>
-              <Dropdown.Item
-                href="checkout"
-                className="hover:bg-gray-100 rounded-lg"
-              >
-                Check Out
-              </Dropdown.Item>
+
+              <Link to="/cart">
+                <Dropdown.Item className="hover:bg-gray-100 rounded-lg">
+                  Cart Page
+                </Dropdown.Item>
+              </Link>
+
+              <Link to="/checkout">
+                <Dropdown.Item className="hover:bg-gray-100 rounded-lg">
+                  Check Out
+                </Dropdown.Item>
+              </Link>
+
+              <Link to="/">
+                <Dropdown.Item
+                  className="hover:bg-gray-100 rounded-lg"
+                  onClick={handleLogOut}
+                >
+                  Logout
+                </Dropdown.Item>
+              </Link>
+
             </Dropdown>
           ) : (
             <Link to="/login">
@@ -85,7 +101,7 @@ export const Navbar = () => {
 
           {/* Wishlist Icon */}
           <button className="hidden sm:block">
-            <CiHeart className="size-5 md:size-8" />
+            <CiHeart className="size-6 md:size-8" />
           </button>
 
           {/* Cart Icon */}

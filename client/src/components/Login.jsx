@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaGoogle, FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaGoogle,
+  FaEnvelope,
+  FaLock,
+  FaSignInAlt,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -15,9 +25,37 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { loginUser, signInWithGoogle } = useAuth();
+  console.log("loginUser", loginUser);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
+
+  const onSubmit = async (data) => {
+    try {
+      await loginUser(data.email, data.password);
+      alert("Login successful!");
+      navigate("/");
+    } catch (error) {
+      setMessage("Login failed. Please check your credentials.");
+      console.log("Login error:", error);
+    }
+
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      alert("Google sign-in successful!");
+      navigate("/")
+    } catch (error) {
+      setMessage("Google sign-in failed. Please try again.");
+    }
+  }
 
   return (
     <>
@@ -83,7 +121,7 @@ const Login = () => {
                   </div>
                 </div>
 
-                {/* Password */}
+                {/* Password with visibility toggle */}
                 <div>
                   <label
                     htmlFor="password"
@@ -97,7 +135,7 @@ const Login = () => {
                     </div>
                     <input
                       {...register("password", { required: true })}
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
                       value={password}
@@ -106,6 +144,21 @@ const Login = () => {
                       required
                       className="pl-7 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-black focus:border-black bg-white bg-opacity-90"
                     />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                      tabIndex="-1"
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                    >
+                      {showPassword ? (
+                        <FaEyeSlash className="text-xs" />
+                      ) : (
+                        <FaEye className="text-xs" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
@@ -113,7 +166,7 @@ const Login = () => {
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center">
                     <input
-                      {...register("remember-me", { required: true })}
+                      {...register("remember-me", { required: false })}
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
@@ -149,9 +202,10 @@ const Login = () => {
                     Sign In
                   </button>
 
-                  <button
+                  <button 
                     type="button"
                     className="flex justify-center items-center bg-white border border-gray-300 text-gray-800 py-2 px-3 rounded-lg text-sm font-medium hover:bg-gray-100 transition duration-300 shadow-sm flex-1 hover:scale-105"
+                    onClick={handleGoogleSignIn}
                   >
                     <FaGoogle className="text-red-600 mr-2 text-sm" />
                     Sign in with Google
