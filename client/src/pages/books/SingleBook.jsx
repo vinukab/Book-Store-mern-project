@@ -5,22 +5,16 @@ import { Button, Card } from "flowbite-react";
 import { getImgUrl } from "../../utils/getImgUrl";
 import LoadingComponent from "../../components/Loading";
 
-import {
-  FaBookOpen,
-  FaTag,
-  FaCalendarAlt,
-  FaStar,
-  FaUser,
-} from "react-icons/fa";
+import { FaBookOpen, FaTag, FaCalendarAlt, FaUser } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/cart/CartSlice";
 
 const SingleBook = () => {
   const { id } = useParams();
   const { data: book, isLoading, isError } = useFetchSingleBookQuery(id);
 
   if (isLoading) {
-    return (
-      <LoadingComponent />
-    );
+    return <LoadingComponent />;
   }
 
   if (isError || !book) {
@@ -37,6 +31,11 @@ const SingleBook = () => {
       </div>
     );
   }
+
+  const dispatch = useDispatch();
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gray-50">
@@ -90,7 +89,7 @@ const SingleBook = () => {
               </div>
             </div>
             <div className="flex justify-end mb-2">
-              <Button className="px-6 py-2 bg-black hover:bg-gray-800 text-white">
+              <Button className="px-6 py-2 bg-black hover:bg-gray-800 text-white" onClick={()=>handleAddToCart(book)}>
                 Add to Cart
               </Button>
             </div>

@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Home from "../pages/home/Home"
+import Home from "../pages/home/Home";
 import Register from "../components/Register";
 import Login from "../components/Login";
 import CartPage from "../pages/books/CartPage";
 import CheckOutPage from "../pages/books/CheckOutPage";
 import SingleBook from "../pages/books/SingleBook";
+import PrivateRoute from "./privateroute";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home/>,
+        element: <Home />,
       },
       {
         path: "/orders",
@@ -23,26 +24,31 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <h1>About us</h1>,
-      },{
-        path:"/cart",
-        element:<CartPage />
       },
       {
-        path:"/checkout",
-        element:<CheckOutPage />  
+        path: "/cart",
+        element: <CartPage />,
       },
       {
-        path:"/login",
-        element: <Login />
+        path: "/checkout",
+        element: (
+          <PrivateRoute>
+            <CheckOutPage />
+          </PrivateRoute>
+        ),
       },
       {
-        path:"/register",
-        element: <Register />
+        path: "/login",
+        element: <Login />,
       },
       {
-        path:"/books/:id",
-        element:<SingleBook />
-      }
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/books/:id",
+        element: <SingleBook />,
+      },
     ],
   },
 ]);

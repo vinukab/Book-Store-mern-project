@@ -6,11 +6,19 @@ import {
   FaEnvelope,
   FaLock,
   FaUserPlus,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const { registerUser, signInWithGoogle } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -18,8 +26,35 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      await registerUser(data.email, data.password);
+      alert("User registered successfully");
+    } catch (error) {
+      setMessage("Please enter a valid email and password");
+    }
+
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      alert("Google sign-in successful!");
+      navigate("/");
+    } catch (error) {
+      setMessage("Google sign-in failed. Please try again.");
+    }
   };
 
   return (
@@ -139,7 +174,7 @@ const Register = () => {
                     )}
                   </div>
 
-                  {/* Password */}
+                  {/* Password with visibility toggle */}
                   <div>
                     <label
                       htmlFor="password"
@@ -153,19 +188,34 @@ const Register = () => {
                       </div>
                       <input
                         {...register("password", { required: true })}
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         id="password"
                         name="password"
                         placeholder="••••••••"
                         className="pl-7 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-black focus:border-black bg-white bg-opacity-90"
                       />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                        tabIndex="-1"
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showPassword ? (
+                          <FaEyeSlash className="text-xs" />
+                        ) : (
+                          <FaEye className="text-xs" />
+                        )}
+                      </button>
                     </div>
                     {errors.password && (
                       <p className="text-red-500 text-xs mt-1">Required</p>
                     )}
                   </div>
 
-                  {/* Confirm Password */}
+                  {/* Confirm Password with visibility toggle */}
                   <div className="md:col-span-2">
                     <label
                       htmlFor="confirmPassword"
@@ -182,9 +232,26 @@ const Register = () => {
                         id="confirmPassword"
                         name="confirmPassword"
                         placeholder="••••••••"
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         className="pl-7 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-black focus:border-black bg-white bg-opacity-90"
                       />
+                      <button
+                        type="button"
+                        onClick={toggleConfirmPasswordVisibility}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                        tabIndex="-1"
+                        aria-label={
+                          showConfirmPassword
+                            ? "Hide password"
+                            : "Show password"
+                        }
+                      >
+                        {showConfirmPassword ? (
+                          <FaEyeSlash className="text-xs" />
+                        ) : (
+                          <FaEye className="text-xs" />
+                        )}
+                      </button>
                     </div>
                     {errors.confirmPassword && (
                       <p className="text-red-500 text-xs mt-1">Required</p>
@@ -204,6 +271,7 @@ const Register = () => {
                   <button
                     type="button"
                     className="flex justify-center items-center bg-white border border-gray-300 text-gray-800 py-2 px-3 rounded-lg text-sm font-medium hover:bg-gray-100 transition duration-300 shadow-sm flex-1 hover:scale-105"
+                    onClick={handleGoogleSignIn}
                   >
                     <FaGoogle className="text-red-600 mr-2 text-sm" />
                     Sign up with Google
