@@ -38,13 +38,12 @@ const CheckOutPage = () => {
         state: data.state,
         zipcode: data.zipcode,
       },
-      phone: data.phone,
       productsId: cartItems.map((item) => item._id),
       totalPrice: totalPrice,
     };
     try {
       await createOrder(newOrder).unwrap();
-      
+
       Swal.fire({
         title: "Confirm Order",
         text: "You won't be able to revert this!",

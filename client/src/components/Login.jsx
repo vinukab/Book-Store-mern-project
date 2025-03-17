@@ -70,7 +70,7 @@ const Login = () => {
         }}
       />
 
-      <div className="min-h-screen flex justify-center items-center p-4">
+      <div className="h-[calc(100vh-160px)] flex justify-center items-center p-4">
         <div className="max-w-3xl w-full bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
             {/* Left side - Form header */}
@@ -202,7 +202,7 @@ const Login = () => {
                     Sign In
                   </button>
 
-                  <button 
+                  <button
                     type="button"
                     className="flex justify-center items-center bg-white border border-gray-300 text-gray-800 py-2 px-3 rounded-lg text-sm font-medium hover:bg-gray-100 transition duration-300 shadow-sm flex-1 hover:scale-105"
                     onClick={handleGoogleSignIn}
