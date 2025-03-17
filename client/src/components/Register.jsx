@@ -70,7 +70,7 @@ const Register = () => {
         }}
       />
 
-      <div className="min-h-screen flex justify-center items-center p-4">
+      <div className="h-[calc(100vh-160px)] flex justify-center items-center p-4">
         <div className="max-w-3xl w-full bg-white bg-opacity-90 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
             {/* Left side - Form header */}

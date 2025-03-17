@@ -16,9 +16,11 @@ app.use(
 
 const bookRoutes = require("./src/books/book.route.js");
 const orderRoutes = require("./src/orders/order.route.js");
+const userRoutes= require("./src/users/user.route.js");
 
 app.use("/api/books", bookRoutes); //prefixes any route in book.route.js with /api/books
 app.use("/api/orders", orderRoutes); //prefixes any route in order.route.js with /api/orders
+app.use("/api/auth", userRoutes); //prefixes any route in user.route.js with /api/auth
 
 async function main() {
   await mongoose.connect(process.env.DB_URL); //connects to the database using the URL from .env file

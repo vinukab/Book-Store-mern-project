@@ -12,9 +12,10 @@ const {
   updateBook,
   deleteBook,
 } = require("./book.controller");
+const verifyAdminToken = require("../middleware/verifyAdminToken");
 
 // POST request to add a new book
-router.post("/add", postABook);
+router.post("/add",verifyAdminToken, postABook);
 
 // GET request to get all books
 router.get("/", getAllBooks);
@@ -23,9 +24,9 @@ router.get("/", getAllBooks);
 router.get("/:id", getSingleBook);
 
 // PUT request to update a book by ID
-router.put("/edit/:id", updateBook);
+router.put("/edit/:id", verifyAdminToken, updateBook);
 
 // DELETE request to delete a book by ID
-router.delete("/delete/:id", deleteBook);
+router.delete("/delete/:id", verifyAdminToken, deleteBook);
 
 module.exports = router;
