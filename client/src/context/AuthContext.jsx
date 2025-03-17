@@ -46,6 +46,8 @@ export const AuthProvider = ({ children }) => {
     return await signOut(auth);
   };
 
+  
+
   //manage user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -67,6 +69,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
+    loading,
     registerUser,
     loginUser,
     signInWithGoogle,

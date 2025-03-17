@@ -15,10 +15,13 @@ app.use(
 );
 
 const bookRoutes = require("./src/books/book.route.js");
+const orderRoutes = require("./src/orders/order.route.js");
+
 app.use("/api/books", bookRoutes); //prefixes any route in book.route.js with /api/books
+app.use("/api/orders", orderRoutes); //prefixes any route in order.route.js with /api/orders
 
 async function main() {
-  await mongoose.connect(process.env.DB_URL);//connects to the database using the URL from .env file
+  await mongoose.connect(process.env.DB_URL); //connects to the database using the URL from .env file
   app.use("/", (req, res) => {
     res.send("Welcome to my Book Store server!!!");
   });
