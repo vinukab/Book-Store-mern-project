@@ -1,13 +1,12 @@
 import React from "react";
-import { useFetchSingleBookQuery } from "../../redux/features/cart/booksApi";
 import { useParams } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
 import { getImgUrl } from "../../utils/getImgUrl";
 import LoadingComponent from "../../components/Loading";
-
 import { FaBookOpen, FaTag, FaCalendarAlt, FaUser } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/CartSlice";
+import { useFetchSingleBookQuery } from "../../redux/features/books/booksApi";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -89,7 +88,10 @@ const SingleBook = () => {
               </div>
             </div>
             <div className="flex justify-end mb-2">
-              <Button className="px-6 py-2 bg-black hover:bg-gray-800 text-white" onClick={()=>handleAddToCart(book)}>
+              <Button
+                className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
+                onClick={() => handleAddToCart(book)}
+              >
                 Add to Cart
               </Button>
             </div>

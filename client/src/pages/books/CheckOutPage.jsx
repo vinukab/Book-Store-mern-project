@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
+import LoadingComponent from "../../components/Loading";
+import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi"; // Corrected import
+import getBaseUrl from "../../utils/baseUrl";
+import Swal from "sweetalert2";
 
 const CheckOutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -18,8 +22,11 @@ const CheckOutPage = () => {
     watch,
     formState: { errors },
   } = useForm();
+  const [isChecked, setIsChecked] = useState(false);
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data); // Log the form data
     const newOrder = {
       name: data.name,
@@ -31,13 +38,32 @@ const CheckOutPage = () => {
         state: data.state,
         zipcode: data.zipcode,
       },
+      phone: data.phone,
       productsId: cartItems.map((item) => item._id),
       totalPrice: totalPrice,
     };
-    console.log(newOrder); // Log the new order object
+    try {
+      await createOrder(newOrder).unwrap();
+      
+      Swal.fire({
+        title: "Confirm Order",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, confirm order!",
+      });
+      navigate("/orders");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("failed to place order");
+    }
   };
 
-  const [isChecked, setIsChecked] = useState(false);
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <>

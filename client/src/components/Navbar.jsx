@@ -63,12 +63,12 @@ export const Navbar = () => {
                 Dashboard
               </Dropdown.Item>
 
-              <Dropdown.Item
-                href="/orders"
-                className="hover:bg-gray-100 rounded-lg"
-              >
-                Orders
-              </Dropdown.Item>
+              <Link to="/orders">
+                <Dropdown.Item className="hover:bg-gray-100 rounded-lg">
+                  Orders
+                </Dropdown.Item>
+              </Link>
+
               <Dropdown.Divider />
 
               <Link to="/cart">
@@ -91,7 +91,6 @@ export const Navbar = () => {
                   Logout
                 </Dropdown.Item>
               </Link>
-
             </Dropdown>
           ) : (
             <Link to="/login">
